@@ -15,6 +15,7 @@ Media containers
 4. sonarr
 5. lidarr
 6. makemkv
+7. koel
 
 Gaming
 1. Mcmyadmin2
