@@ -27,6 +27,7 @@ office
 3. duplicati
 4. samba-webmin
 5. filezilla
+6. Mailu
 
 other
 1. heimdall webpage
