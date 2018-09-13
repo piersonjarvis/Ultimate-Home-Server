@@ -25,6 +25,7 @@ office
 2. collabora
 3. duplicati
 4. samba-webmin
+5. filezilla
 
 other
 1. heimdall webpage
