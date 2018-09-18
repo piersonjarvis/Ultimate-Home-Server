@@ -16,6 +16,7 @@ Media containers
 5. lidarr
 6. makemkv
 7. koel
+8. Tautulli
 
 Gaming
 1. Mcmyadmin2
@@ -25,10 +26,12 @@ office
 1. nextcloud
 2. collabora
 3. duplicati
-4. samba-webmin
-5. filezilla
-6. Mailu
+4. filezilla
+5. Mailu
 
-other
+Managers
 1. heimdall webpage
 2. organizr
+3. webmin-samba
+4. webmin-bind
+5. home-assistant
