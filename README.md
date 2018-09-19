@@ -26,8 +26,9 @@ office
 1. nextcloud
 2. collabora
 3. duplicati
-4. filezilla
-5. Mailu
+4. Syncthing
+5. filezilla
+6. Mailu
 
 Managers
 1. heimdall webpage
