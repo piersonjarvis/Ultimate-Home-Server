@@ -25,10 +25,9 @@ Gaming
 office
 1. nextcloud
 2. collabora
-3. duplicati
-4. Syncthing
-5. filezilla
-6. Mailu
+3. Syncthing
+4. filezilla
+5. Mailu
 
 Managers
 1. heimdall webpage
