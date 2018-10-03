@@ -16,7 +16,7 @@ Media containers
 5. lidarr
 6. makemkv
 7. Tautulli
-8. Plex Requests
+8. Ombi
 
 Gaming
 1. Mcmyadmin2
