@@ -1,4 +1,7 @@
 # Ultimate-Home-Server
+
+This is currently a work in progress and is in no way ready for deployment. 
+
 Simple list of docker containers for the ultimate home server
 
 Adminstration containers
@@ -24,14 +27,8 @@ Gaming
 
 office
 1. nextcloud
-2. collabora
-3. Syncthing
-4. filezilla
-5. Mailu
 
 Managers
 1. heimdall webpage
 2. organizr
 3. webmin-samba
-4. webmin-bind
-5. home-assistant
