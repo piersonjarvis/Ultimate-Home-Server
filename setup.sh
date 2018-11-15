@@ -10,6 +10,7 @@ sudo usermod -aG docker "$USER"
 # installing docker compose
 sudo apt-get install docker-compose -y
 wait
+sudo docker network create home
 # download folder for installation
 wget wget https://github.com/piersonjarvis/Ultimate-Home-Server/archive/master.zip
 # preparing folder
@@ -17,6 +18,7 @@ unzip master.zip
 sudo rm -r master.zip
 sudo mv Ultimate-Home-Server-master Server
 cd Server
+mkdir configs
 # setup domain name, if you have one this is where you will set it, if not it will default to localdomain
 if dialog --stdout --title "Domain" --yesno "Do you have a certified domain?" 0 0;
 then 
@@ -40,7 +42,7 @@ for selection in $selections
 do
  case $selection in
  1)
- sed -e s/\#1//g -i docker-compose.yml && sed -e s/sabnzbd
+ sed -e s/\#1//g -i docker-compose.yml && mkdir ./media
  ;;
  2)
  sed -e s/\#2//g -i docker-compose.yml
@@ -60,3 +62,8 @@ uid=$(id -u)
 gid=$(id -g)
 echo "PUID=$uid" >> uidgid.env
 echo "PGID=$gid" >> uidgid.env
+docker-compose up -d
+if [ -f "./configs/media/sabnzbd/sabnzbd.ini" ]
+then
+sed -e s/sabnzbd/sabnzbd.$domain/g ./configs/media/sabnzbd/sabnzbd.ini
+fi

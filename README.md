@@ -17,12 +17,11 @@ Media containers
 3. radarr
 4. sonarr
 5. lidarr
-6. makemkv
 7. Tautulli
 8. Ombi
 
 Gaming
-1. Mcmyadmin2
+1. Mcmyadmin2/amp server
 2. mumble
 
 office
