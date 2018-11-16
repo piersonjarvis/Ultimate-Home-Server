@@ -63,8 +63,7 @@ do
 done
 uid=$(id -u)
 gid=$(id -g)
-echo "PUID=$uid" >> uidgid.env
-echo "PGID=$gid" >> uidgid.env
+{ echo "PUID=$uid"; echo "PGID=$gid"; } >> .env
 docker-compose up -d
 if [ -f "./configs/media/sabnzbd/sabnzbd.ini" ]
 then
