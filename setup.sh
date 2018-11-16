@@ -23,10 +23,13 @@ mkdir configs
 if dialog --stdout --title "Domain" --yesno "Do you have a certified domain?" 0 0;
 then 
 domain=$(dialog --stdout --title "domain" --inputbox "Please set domain name:" 0 0) && \
-sed -e s/\#t//g -i docker-compose.yml
+email=$(dialog --stdout --title "email" --inputbox "Please enter email address:" 0 0) && \
+sed -e s/\#t//g -i docker-compose.yml && \
+sed -e s/domainname/$domain/g -i ./traefik/traefik.toml
+sed -e s/example@email/$email/g -i ./traefik/traefik.toml
 else
 domain=localdomain && \
-sed -e s/\#local//g -i docker-compose.yml
+sed -e s/\#l//g -i docker-compose.yml
 fi
 sed -e s/domainname/$domain/g -i docker-compose.yml
 # server selection happens here

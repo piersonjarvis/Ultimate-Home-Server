@@ -1,3 +1,256 @@
 version: '3'
 services:
-  
+#t   reverse-proxy:
+#t    image: traefik
+#t    command: --api
+#t    labels:
+#t      - "traefik.frontend.rule=Host:traefik.jarvisenterprises.us"
+#t      - "traefik.port=8080"
+#t    ports:
+#t      - "80:80"
+#t      - "443:443"
+#t    networks:
+#t      - home
+#t    volumes:
+#t      - /var/run/docker.sock:/var/run/docker.sock
+#t      - ./traefik/traefik.toml:/traefik.toml
+#t      - ./traefik/acme.json:/acme.json
+#t    restart: always
+#t    env_file: uidgid.env
+#t    container_name: reverse-proxy
+
+  speedtest:
+    image: piersonjarvis/speedtest
+#t    labels:
+#t      - "traefik.frontend.rule=Host:speedtest.jarvisenterprises.us"
+#l    ports:
+#l      - 80:80
+    restart: always
+    env_file: uidgid.env
+    networks:
+      - home
+    container_name: speedtest
+
+  portainer:
+    image: portainer/portainer
+#t    labels:
+#t      - "traefik.frontend.rule=Host:portainer.jarvisenterprises.us"
+#l    ports:
+#l      - 9000:9000
+    restart: always
+    networks:
+      - home
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /configs/portainer:/data
+    env_file: uidgid.env
+    container_name: portainer
+
+  watchtower:
+    image: v2tec/watchtower
+    restart: always
+    env_file: uidgid.env
+    networks:
+      - home
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  netdata:
+    image: titpetric/netdata
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - home
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    env_file: uidgid.env
+    container_name: netdata
+    hostname: netdata
+#t    labels:
+#t      - "traefik.frontend.rule=Host:netdata.jarvisenterprises.us"
+#l    ports:
+#l      - 19999:19999
+
+#1  plex:
+#1    image: plexinc/pms-docker:plexpass
+#1    restart: always
+#1    networks:
+#1      - home
+#1    volumes:
+#1      - /home/media:/data
+#1      - ./configs/plex:/config
+#1    env_file: uidgid.env
+#1    container_name: plex
+#1    hostname: plex
+#1    environment:
+#1      - ADVERTISE_IP=http://192.168.0.10:32400/
+#1    ports:
+#1      - 32400:32400/tcp
+#1      - 3005:3005/tcp
+#1      - 8324:8324/tcp
+#1      - 32469:32469/tcp
+#1      - 1900:1900/udp
+#1      - 32410:32410/udp
+#1      - 32412:32412/udp
+#1      - 32413:32413/udp
+#1      - 32414:32414/udp
+#t    labels:
+#t      - "traefik.frontend.rule=Host:plex.jarvisenterprises.us"
+#t      - "traefik.port=32400"
+
+#1  sabnzbd:
+#1    image: linuxserver/sabnzbd
+#t    labels:
+#t      - "traefik.frontend.rule=Host:sabnzbd.jarvisenterprises.us"
+#l    ports:
+#l      - 8080:8080
+#1    restart: always
+#1    networks:
+#1      - home
+#1    volumes:
+#1      - /home/media/Downloads/complete:/downloads
+#1      - /home/media/Downloads/incomplete:/incomplete-downloads
+#1      - ./configs/sabnzbd:/config
+#1    env_file: uidgid.env
+#1    container_name: sabnzbd
+#1    hostname: sabnzbd
+
+#1  sonarr:
+#1    image: linuxserver/sonarr
+#t    labels:
+#t      - "traefik.frontend.rule=Host:sonarr.jarvisenterprises.us"
+#l    ports:
+#l      - 8989:8989
+#1    restart: always
+#1    networks:
+#1      - home
+#1    volumes:
+#1      - /home/media/Video/TVshows:/tv
+#1      - /home/media/Downloads/complete:/downloads
+#1      - ./configs/sonarr:/config
+#1      - /etc/localtime:/etc/localtime:ro
+#1    env_file: uidgid.env
+#1    container_name: sonarr
+#1    hostname: sonarr
+
+#1  radarr:
+#1    image: linuxserver/radarr
+#t    labels:
+#t      - "traefik.frontend.rule=Host:radarr.jarvisenterprises.us"
+#l    ports:
+#l      - 7878:7878
+#1    restart: always
+#1    networks:
+#1      - home
+#1    volumes:
+#1      - /home/media/Downloads/complete:/downloads
+#1      - /home/media/Video/Movies:/movies
+#1      - ./configs/radarr:/config
+#1      - /etc/localtime:/etc/localtime:ro
+#1    env_file: uidgid.env
+#1    container_name: radarr
+#1    hostname: radarr
+
+#1  lidarr:
+#1    image: linuxserver/lidarr
+#1    restart: always
+#1    env_file: uidgid.env
+#1    networks:
+#1      - home
+#1    container_name: lidarr
+#1    hostname: lidarr
+#1    volumes:
+#1      - /home/media/music:/music
+#1      - ./configs/lidarr:/config
+#1     - /home/media/Downloads/complete:/downloads
+#t    labels:
+#t      - "traefik.frontend.rule=Host:lidarr.jarvisenterprises.us"
+#l    ports:
+#l      - 8686:8686
+
+#1  plexstats:
+#1    image: linuxserver/tautulli
+#1    container_name: plexstats
+#1    hostname: plexstats
+#1    restart: always
+#1    env_file: uidgid.env
+#1    networks:
+#1      - home
+#1    volumes:
+#1      - ./configs/tautulli:/config
+#t    labels:
+#t      - "traefik.frontend.rule=Host:plexstats.jarvisenterprises.us"
+#l    ports:
+#l      - 8181:8181
+
+#1  ombi:
+#1    image: linuxserver/ombi
+#1    restart: always
+#1    env_file: uidgid.env
+#1    container_name: ombi
+#1    hostname: ombi
+#1    networks:
+#1     - home
+#1    volumes:
+#1      - ./configs/ombi:/config
+#t    labels:
+#t      - "traefik.frontend.rule=Host:requests.jarvisenterprises.us"
+#l    ports:
+#l      - 3579:3579
+
+
+
+#5  heimdall:
+#5    image: linuxserver/heimdall
+#5    restart: always
+#5    networks:
+#5      - home
+#5    container_name: heimdall
+#5    env_file: uidgid.env
+#5    volumes:
+#5      - ./configs/heimdall:/config
+#t    labels:
+#t      - "traefik.frontend.rule=Host:homepage.jarvisenterprises.us"
+#t      - "traefik.port=80"
+#l    ports:
+#l      - 83:80
+
+#5  organizr:
+#5    image: lsiocommunity/organizr
+#5    restart: always
+#5    env_file: uidgid.env
+#5    networks:
+#5      - home
+#5    container_name: organizr
+#5    volumes:
+#5      - ./configs/organizr:/config
+#t    labels:
+#t      - "traefik.frontend.rule=Host:movies.jarvisenterprises.us"
+#l    ports:
+#l      - 82:80
+
+#5  samba:
+#5    image: piersonjarvis/webmin-samba
+#5    restart: always
+#5    networks:
+#5      - home
+#5    container_name: samba
+#5    volumes:
+#5     - "/home/media:/media/storage"
+#5     - "~/Docker:/media/docker"
+#5     - "./configs/samba:/etc/samba"
+#5    ports:
+#5     - 139:139
+#5     - 445:445
+#l     - 81:80
+#5    hostname: samba
+#t    labels:
+#t      - "traefik.frontend.rule=Host:samba.jarvisenterprises.us"
+
+      
+networks:
+  home:
+    external: true
