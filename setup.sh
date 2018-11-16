@@ -67,3 +67,5 @@ if [ -f "./configs/media/sabnzbd/sabnzbd.ini" ]
 then
 sed -e s/sabnzbd/sabnzbd.$domain/g ./configs/media/sabnzbd/sabnzbd.ini
 fi
+sudo crontab -l | { cat; echo "55 24 * * * docker system prune -a"; } | crontab -
+docker restart $(docker ps -a -q)
