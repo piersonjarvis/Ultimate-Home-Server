@@ -48,10 +48,10 @@ do
  sed -e s/\#1//g -i docker-compose.yml && mkdir ./media
  ;;
  2)
- sed -e s/\#2//g -i docker-compose.yml
+ sed -e s/\#2//g -i docker-compose.yml && sed -e s/\#g//g -i docker-compose.yml
  ;;
  3)
- sed -e s/\#3//g -i docker-compose.yml
+ sed -e s/\#3//g -i docker-compose.yml && sed -e s/\#g//g -i docker-compose.yml
  ;;
  4)
  sed -e s/\#4//g -i docker-compose.yml

@@ -97,16 +97,16 @@ services:
 #1      - 32412:32412/udp
 #1      - 32413:32413/udp
 #1      - 32414:32414/udp
-#t    labels:
-#t      - "traefik.frontend.rule=Host:plex.jarvisenterprises.us"
-#t      - "traefik.port=32400"
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:plex.jarvisenterprises.us"
+#t#1      - "traefik.port=32400"
 
 #1  sabnzbd:
 #1    image: linuxserver/sabnzbd
-#t    labels:
-#t      - "traefik.frontend.rule=Host:sabnzbd.jarvisenterprises.us"
-#l    ports:
-#l      - 8080:8080
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:sabnzbd.jarvisenterprises.us"
+#l#1    ports:
+#l#1      - 8080:8080
 #1    restart: always
 #1    networks:
 #1      - home
@@ -120,10 +120,10 @@ services:
 
 #1  sonarr:
 #1    image: linuxserver/sonarr
-#t    labels:
-#t      - "traefik.frontend.rule=Host:sonarr.jarvisenterprises.us"
-#l    ports:
-#l      - 8989:8989
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:sonarr.jarvisenterprises.us"
+#l#1    ports:
+#l#1      - 8989:8989
 #1    restart: always
 #1    networks:
 #1      - home
@@ -138,10 +138,10 @@ services:
 
 #1  radarr:
 #1    image: linuxserver/radarr
-#t    labels:
-#t      - "traefik.frontend.rule=Host:radarr.jarvisenterprises.us"
-#l    ports:
-#l      - 7878:7878
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:radarr.jarvisenterprises.us"
+#l#1    ports:
+#l#1      - 7878:7878
 #1    restart: always
 #1    networks:
 #1      - home
@@ -166,10 +166,10 @@ services:
 #1      - /home/media/music:/music
 #1      - ./configs/lidarr:/config
 #1     - /home/media/Downloads/complete:/downloads
-#t    labels:
-#t      - "traefik.frontend.rule=Host:lidarr.jarvisenterprises.us"
-#l    ports:
-#l      - 8686:8686
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:lidarr.jarvisenterprises.us"
+#l#1    ports:
+#l#1      - 8686:8686
 
 #1  plexstats:
 #1    image: linuxserver/tautulli
@@ -181,10 +181,10 @@ services:
 #1      - home
 #1    volumes:
 #1      - ./configs/tautulli:/config
-#t    labels:
-#t      - "traefik.frontend.rule=Host:plexstats.jarvisenterprises.us"
-#l    ports:
-#l      - 8181:8181
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:plexstats.jarvisenterprises.us"
+#l#1    ports:
+#l#1      - 8181:8181
 
 #1  ombi:
 #1    image: linuxserver/ombi
@@ -196,12 +196,75 @@ services:
 #1     - home
 #1    volumes:
 #1      - ./configs/ombi:/config
-#t    labels:
-#t      - "traefik.frontend.rule=Host:requests.jarvisenterprises.us"
-#l    ports:
-#l      - 3579:3579
+#t#1    labels:
+#t#1      - "traefik.frontend.rule=Host:requests.jarvisenterprises.us"
+#l#1    ports:
+#l#1      - 3579:3579
+
+#2  minecraft:
+#2    image: linuxserver/mcmyadmin2
+#t#2    labels:
+#t#2      - "traefik.frontend.rule=Host:minecraft.jarvisenterprises.us"
+#t#2      - "traefik.port=8080"
+#l#2    ports:
+#l#2      - 8585:8080
+#2    restart: always
+#2    networks:
+#2      - home
+#2    volumes:
+#2      - ./configs/minecraft:/minecraft
+#2    ports:
+#2      - "25565:25565"
+#2    env_file: uidgid.env
+#2    container_name: minecraft
+
+#3  amp-server:
+#3    image: piersonjarvis/cubecoders-amp-server
+#3    restart: always
+#3    container_name: amp
+#3    volumes:
+#3      - /home/minecraft:/home/AMP/.ampdata/.instances/Minecraft01
+#3    ports:
+#3      - 9081-9180:8081-8180
+#3      - 25565:25565
+#3      - 27015-27020:27015-27020
+#3      - 2777-2778:2777-2778
+#l#3      - 9080:8080
+#t#3    labels:
+#t#3      - "traefik.frontend.rule=Host:minecraft.jarvisenterprises.us"
+#t#3      - "traefik.port=8080"
+
+#g  mumble:
+#g    image: coppit/mumble-server
+#g    networks:
+#g      - home
+#g    ports:
+#g      - 64738:64738
+#g    volumes:
+#g      - ./configs/mumble:/data
+#g    restart: always
+#g    container_name: mumble
+#t#g    labels:
+#t#g      - "traefik.enable=false"
 
 
+#4  nextcloud:
+#4    image: nextcloud
+#t#4    labels:
+#t#4      - "traefik.frontend.rule=Host:nextcloud.jarvisenterprises.us"
+#t#4      - "traefik.backend=nextcloud"
+#t#4      - "traefik.docker.network=home"
+#t#4      - "traefik.port=80"
+#l#4    ports:
+#l#4      - 84:80
+#4    volumes:
+#4      - ./configs/nextcloud:/var/www/html
+#4      - ./configs/nextcloud_data:/data
+#4    restart: always
+#4    networks:
+#4      - home
+#4    env_file: uidgid.env
+#4    container_name: nextcloud
 
 #5  heimdall:
 #5    image: linuxserver/heimdall
@@ -212,11 +275,11 @@ services:
 #5    env_file: uidgid.env
 #5    volumes:
 #5      - ./configs/heimdall:/config
-#t    labels:
-#t      - "traefik.frontend.rule=Host:homepage.jarvisenterprises.us"
-#t      - "traefik.port=80"
-#l    ports:
-#l      - 83:80
+#t#5    labels:
+#t#5      - "traefik.frontend.rule=Host:homepage.jarvisenterprises.us"
+#t#5      - "traefik.port=80"
+#l#5    ports:
+#l#5      - 83:80
 
 #5  organizr:
 #5    image: lsiocommunity/organizr
@@ -227,10 +290,10 @@ services:
 #5    container_name: organizr
 #5    volumes:
 #5      - ./configs/organizr:/config
-#t    labels:
-#t      - "traefik.frontend.rule=Host:movies.jarvisenterprises.us"
-#l    ports:
-#l      - 82:80
+#t#5    labels:
+#t#5      - "traefik.frontend.rule=Host:movies.jarvisenterprises.us"
+#l#5    ports:
+#l#5      - 82:80
 
 #5  samba:
 #5    image: piersonjarvis/webmin-samba
@@ -245,10 +308,10 @@ services:
 #5    ports:
 #5     - 139:139
 #5     - 445:445
-#l     - 81:80
+#l#5     - 81:80
 #5    hostname: samba
-#t    labels:
-#t      - "traefik.frontend.rule=Host:samba.jarvisenterprises.us"
+#t#5    labels:
+#t#5      - "traefik.frontend.rule=Host:samba.jarvisenterprises.us"
 
       
 networks:
