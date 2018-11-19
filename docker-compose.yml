@@ -304,7 +304,7 @@ services:
 #5    volumes:
 #5     - "/home/media:/media/storage"
 #5     - "~/Docker:/media/docker"
-#5     - "./configs/samba:/etc/samba"
+#5     - "./configs/samba:/data"
 #5    ports:
 #5     - 139:139
 #5     - 445:445

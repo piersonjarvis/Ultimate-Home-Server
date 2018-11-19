@@ -69,5 +69,10 @@ if [ -f "./configs/media/sabnzbd/sabnzbd.ini" ]
 then
 sed -e s/sabnzbd/sabnzbd.$domain/g ./configs/media/sabnzbd/sabnzbd.ini
 fi
-sudo crontab -l | { cat; echo "55 24 * * * docker system prune -a"; } | crontab -
+if [ -f "./configs/samba/webmin/miniserv.conf" ]
+then
+sed -e s/referers_none=1/referers=samba.$domain/g ./configs/samba/webmin/miniserv.conf
+fi
+
+sudo crontab -l | { cat; echo "55 24 * * * /usr/bin/docker system prune -f"; } | crontab -
 docker restart $(docker ps -a -q)
