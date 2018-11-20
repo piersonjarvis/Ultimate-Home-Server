@@ -4,7 +4,7 @@ services:
 #t    image: traefik
 #t    command: --api
 #t    labels:
-#t      - "traefik.frontend.rule=Host:traefik.jarvisenterprises.us"
+#t      - "traefik.frontend.rule=Host:traefik.domainname"
 #t      - "traefik.port=8080"
 #t    ports:
 #t      - "80:80"
@@ -22,7 +22,7 @@ services:
   speedtest:
     image: piersonjarvis/speedtest
 #t    labels:
-#t      - "traefik.frontend.rule=Host:speedtest.jarvisenterprises.us"
+#t      - "traefik.frontend.rule=Host:speedtest.domainname"
 #l    ports:
 #l      - 80:80
     restart: always
@@ -34,7 +34,7 @@ services:
   portainer:
     image: portainer/portainer
 #t    labels:
-#t      - "traefik.frontend.rule=Host:portainer.jarvisenterprises.us"
+#t      - "traefik.frontend.rule=Host:portainer.domainname"
 #l    ports:
 #l      - 9000:9000
     restart: always
@@ -70,7 +70,7 @@ services:
     container_name: netdata
     hostname: netdata
 #t    labels:
-#t      - "traefik.frontend.rule=Host:netdata.jarvisenterprises.us"
+#t      - "traefik.frontend.rule=Host:netdata.domainname"
 #l    ports:
 #l      - 19999:19999
 
@@ -98,13 +98,13 @@ services:
 #1      - 32413:32413/udp
 #1      - 32414:32414/udp
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:plex.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:plex.domainname"
 #t#1      - "traefik.port=32400"
 
 #1  sabnzbd:
 #1    image: linuxserver/sabnzbd
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:sabnzbd.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:sabnzbd.domainname"
 #l#1    ports:
 #l#1      - 8080:8080
 #1    restart: always
@@ -121,7 +121,7 @@ services:
 #1  sonarr:
 #1    image: linuxserver/sonarr
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:sonarr.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:sonarr.domainname"
 #l#1    ports:
 #l#1      - 8989:8989
 #1    restart: always
@@ -139,7 +139,7 @@ services:
 #1  radarr:
 #1    image: linuxserver/radarr
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:radarr.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:radarr.domainname"
 #l#1    ports:
 #l#1      - 7878:7878
 #1    restart: always
@@ -167,7 +167,7 @@ services:
 #1      - ./configs/lidarr:/config
 #1     - /home/media/Downloads/complete:/downloads
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:lidarr.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:lidarr.domainname"
 #l#1    ports:
 #l#1      - 8686:8686
 
@@ -182,7 +182,7 @@ services:
 #1    volumes:
 #1      - ./configs/tautulli:/config
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:plexstats.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:plexstats.domainname"
 #l#1    ports:
 #l#1      - 8181:8181
 
@@ -197,14 +197,14 @@ services:
 #1    volumes:
 #1      - ./configs/ombi:/config
 #t#1    labels:
-#t#1      - "traefik.frontend.rule=Host:requests.jarvisenterprises.us"
+#t#1      - "traefik.frontend.rule=Host:requests.domainname"
 #l#1    ports:
 #l#1      - 3579:3579
 
 #2  minecraft:
 #2    image: linuxserver/mcmyadmin2
 #t#2    labels:
-#t#2      - "traefik.frontend.rule=Host:minecraft.jarvisenterprises.us"
+#t#2      - "traefik.frontend.rule=Host:minecraft.domainname"
 #t#2      - "traefik.port=8080"
 #l#2    ports:
 #l#2      - 8585:8080
@@ -231,7 +231,7 @@ services:
 #3      - 2777-2778:2777-2778
 #l#3      - 9080:8080
 #t#3    labels:
-#t#3      - "traefik.frontend.rule=Host:minecraft.jarvisenterprises.us"
+#t#3      - "traefik.frontend.rule=Host:minecraft.domainname"
 #t#3      - "traefik.port=8080"
 
 #g  mumble:
@@ -247,24 +247,31 @@ services:
 #t#g    labels:
 #t#g      - "traefik.enable=false"
 
-
-#4  nextcloud:
-#4    image: nextcloud
-#t#4    labels:
-#t#4      - "traefik.frontend.rule=Host:nextcloud.jarvisenterprises.us"
-#t#4      - "traefik.backend=nextcloud"
-#t#4      - "traefik.docker.network=home"
-#t#4      - "traefik.port=80"
-#l#4    ports:
-#l#4      - 84:80
-#4    volumes:
-#4      - ./configs/nextcloud:/var/www/html
-#4      - ./configs/nextcloud_data:/data
+#4  steamcache:
+#4    image: steamcache/generic
 #4    restart: always
+#4    networks: 
+#4      - home
+#4    container_name: steamcache
+#4    volumes:
+#4      - ./configs/steamcache:/data/cache
+#4      - ./configs/steamcache-logs:/data/logs
+#t#4    labels:
+#t#4      - "traefik.frontend.rule=Host:steamcache.domainname"
+#l#4    ports:
+#l#4      80:80
+
+#4  steamcache-dns:
+#4    image: steamcache/steamcache-dns
+#4    restart: always
+#4    container_name: steamcache-dns
 #4    networks:
 #4      - home
-#4    env_file: uidgid.env
-#4    container_name: nextcloud
+#4    ports:
+#4      - 53:53
+#4    environment:
+#4      - USE_GENERIC_CACHE=true
+#4      - LANCACHE_IP=machineip
 
 #5  heimdall:
 #5    image: linuxserver/heimdall
@@ -276,7 +283,7 @@ services:
 #5    volumes:
 #5      - ./configs/heimdall:/config
 #t#5    labels:
-#t#5      - "traefik.frontend.rule=Host:homepage.jarvisenterprises.us"
+#t#5      - "traefik.frontend.rule=Host:homepage.domainname"
 #t#5      - "traefik.port=80"
 #l#5    ports:
 #l#5      - 83:80
@@ -291,7 +298,7 @@ services:
 #5    volumes:
 #5      - ./configs/organizr:/config
 #t#5    labels:
-#t#5      - "traefik.frontend.rule=Host:movies.jarvisenterprises.us"
+#t#5      - "traefik.frontend.rule=Host:movies.domainname"
 #l#5    ports:
 #l#5      - 82:80
 
@@ -311,9 +318,26 @@ services:
 #l#5     - 81:80
 #5    hostname: samba
 #t#5    labels:
-#t#5      - "traefik.frontend.rule=Host:samba.jarvisenterprises.us"
+#t#5      - "traefik.frontend.rule=Host:samba.domainname"
 
-      
+#6  nextcloud:
+#6    image: nextcloud
+#t#6    labels:
+#t#6      - "traefik.frontend.rule=Host:nextcloud.domainname"
+#t#6      - "traefik.backend=nextcloud"
+#t#6      - "traefik.docker.network=home"
+#t#6      - "traefik.port=80"
+#l#6    ports:
+#l#6      - 84:80
+#6    volumes:
+#6      - ./configs/nextcloud:/var/www/html
+#6      - ./configs/nextcloud_data:/data
+#6    restart: always
+#6    networks:
+#6      - home
+#6    env_file: uidgid.env
+#6    container_name: nextcloud
+
 networks:
   home:
     external: true

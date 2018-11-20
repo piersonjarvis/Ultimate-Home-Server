@@ -37,8 +37,9 @@ servers=(dialog --separate-output --checklist "Select Servers You Would Like Ins
 options=(1 "Media Server" off 
 2 "Game Server (minecraft only)" off 
 3 "Game Server (amp)" off
-4 "Nextcloud" off 
-5 "Web Managers" off)
+4 "Steamcache" off 
+5 "Web Managers" off
+6 "nextcloud" off)
 selections=$("${servers[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for selection in $selections
@@ -59,19 +60,26 @@ do
  5)
  sed -e s/\#5//g -i docker-compose.yml
  ;;
+ 4)
+ if dialog --stdout --title "steamcache" --yesno "This option requires further configuration than what I can place in this script, this is meant for advanced users only. Do you wish to continue?" 0 0;
+ then
+ sed -e s/\#6//g -i docker-compose.yml && clear
+ fi
+ ;;
  esac
 done
 uid=$(id -u)
 gid=$(id -g)
 { echo "PUID=$uid"; echo "PGID=$gid"; } >> .env
+export COMPOSE_HTTP_TIMOUT=30000
 docker-compose up -d
 if [ -f "./configs/media/sabnzbd/sabnzbd.ini" ]
 then
 sed -e s/sabnzbd/sabnzbd.$domain/g ./configs/media/sabnzbd/sabnzbd.ini
 fi
-if [ -f "./configs/samba/webmin/miniserv.conf" ]
+if [ -f "./configs/samba/webmin/config" ]
 then
-sed -e s/referers_none=1/referers=samba.$domain/g ./configs/samba/webmin/miniserv.conf
+sed -e s/referers_none=1/referers=samba.$domain/g ./configs/samba/webmin/config
 fi
 
 sudo crontab -l | { cat; echo "55 24 * * * /usr/bin/docker system prune -f"; } | crontab -
