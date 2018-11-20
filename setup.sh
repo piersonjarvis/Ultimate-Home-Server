@@ -12,7 +12,7 @@ sudo apt-get install docker-compose -y
 wait
 sudo docker network create home
 # download folder for installation
-wget wget https://github.com/piersonjarvis/Ultimate-Home-Server/archive/master.zip
+wget https://github.com/piersonjarvis/Ultimate-Home-Server/archive/master.zip
 # preparing folder
 unzip master.zip
 sudo rm -r master.zip
