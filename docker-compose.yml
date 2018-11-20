@@ -165,7 +165,7 @@ services:
 #1    volumes:
 #1      - /home/media/music:/music
 #1      - ./configs/lidarr:/config
-#1     - /home/media/Downloads/complete:/downloads
+#1      - /home/media/Downloads/complete:/downloads
 #t#1    labels:
 #t#1      - "traefik.frontend.rule=Host:lidarr.domainname"
 #l#1    ports:
@@ -193,7 +193,7 @@ services:
 #1    container_name: ombi
 #1    hostname: ombi
 #1    networks:
-#1     - home
+#1      - home
 #1    volumes:
 #1      - ./configs/ombi:/config
 #t#1    labels:
@@ -259,7 +259,7 @@ services:
 #t#4    labels:
 #t#4      - "traefik.frontend.rule=Host:steamcache.domainname"
 #l#4    ports:
-#l#4      80:80
+#l#4      - 80:80
 
 #4  steamcache-dns:
 #4    image: steamcache/steamcache-dns
@@ -268,7 +268,7 @@ services:
 #4    networks:
 #4      - home
 #4    ports:
-#4      - 53:53
+#4      - "53:53"
 #4    environment:
 #4      - USE_GENERIC_CACHE=true
 #4      - LANCACHE_IP=machineip
@@ -309,13 +309,13 @@ services:
 #5      - home
 #5    container_name: samba
 #5    volumes:
-#5     - "/home/media:/media/storage"
-#5     - "~/Docker:/media/docker"
-#5     - "./configs/samba:/data"
+#5      - "/home/media:/media/storage"
+#5      - "~/Docker:/media/docker"
+#5      - "./configs/samba:/data"
 #5    ports:
-#5     - 139:139
-#5     - 445:445
-#l#5     - 81:80
+#5      - 139:139
+#5      - 445:445
+#l#5      - 81:80
 #5    hostname: samba
 #t#5    labels:
 #t#5      - "traefik.frontend.rule=Host:samba.domainname"

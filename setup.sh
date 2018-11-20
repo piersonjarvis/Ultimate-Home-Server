@@ -72,7 +72,7 @@ uid=$(id -u)
 gid=$(id -g)
 { echo "PUID=$uid"; echo "PGID=$gid"; } >> .env
 export COMPOSE_HTTP_TIMOUT=30000
-docker-compose up -d
+sudo docker-compose up -d
 if [ -f "./configs/media/sabnzbd/sabnzbd.ini" ]
 then
 sed -e s/sabnzbd/sabnzbd.$domain/g ./configs/media/sabnzbd/sabnzbd.ini
@@ -81,6 +81,5 @@ if [ -f "./configs/samba/webmin/config" ]
 then
 sed -e s/referers_none=1/referers=samba.$domain/g ./configs/samba/webmin/config
 fi
-
-sudo crontab -l | { cat; echo "55 24 * * * /usr/bin/docker system prune -f"; } | crontab -
-docker restart $(docker ps -a -q)
+crontab -l | { cat; echo "55 24 * * * /usr/bin/docker system prune -f"; } | crontab -
+sudo docker restart $(docker ps -a -q)
